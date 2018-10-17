@@ -70,7 +70,7 @@ Once you've corrected the bugs and have the basic features working, commit the f
 Here are some common questions we've received. If you have additional questions, please email us at `systems-puzzle@insightdatascience.com` and we'll answer your questions as quickly as we can (during PST business hours), and update this FAQ. Again, only contact us after you have read through the Readme and FAQ one more time and cannot find the answer to your question.
 
 ### Which Github link should I submit?
-You should submit the URL for the top-level root of your repository. For example, this repo would be submitted by copying the URL `https://github.com/InsightDataScience/Systems-Puzzle-Weblog` into the appropriate field on the application. **Do NOT try to submit your coding puzzle using a pull request**, which would make your source code publicly available.
+You should submit the URL for the top-level root of your repository. For example, this repo would be submitted by copying the URL `https://github.com/InsightDataScience/System-Puzzle-Weblog` into the appropriate field on the application. **Do NOT try to submit your coding puzzle using a pull request**, which would make your source code publicly available.
 
 ### Do I need a private Github repo?
 No, you may use a public repo, there is no need to purchase a private repo. You may also submit a link to a Bitbucket repo if you prefer.
