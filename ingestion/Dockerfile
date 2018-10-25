@@ -5,6 +5,6 @@ COPY requirements_ingestion.txt .
 COPY weblogs.log .
 COPY ingestion.py .
 RUN pip install -r requirements_ingestion.txt
-EXPOSE 5672
+EXPOSE 5673
 
 CMD ["python", "ingestion.py"]

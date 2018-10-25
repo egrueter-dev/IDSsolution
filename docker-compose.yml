@@ -41,7 +41,7 @@ services:
     depends_on:
       - rabbit
     ports:
-     - "80:5672"
+     - "5673:5673" # Changed port
   processing:
     build: processing/.
     env_file:
@@ -53,7 +53,7 @@ services:
     depends_on:
       - rabbit
     ports:
-     - "81:5672"
+     - "5674:5674" #changed port
   nginx:
     image: "nginx:1.13.5"
     ports:
