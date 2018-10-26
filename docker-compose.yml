@@ -8,6 +8,8 @@ services:
      - env_file
     networks:
       - db_network
+    ports:
+      - "5432:5432"
   flaskapp:
     build: .
     env_file:
