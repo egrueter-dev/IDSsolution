@@ -18,9 +18,19 @@ def index():
     cur.execute(sql_all)
     all = cur.fetchone()[0]
 
-    # Get number of all succesful requests
+    # Get # of all successful local GET requests
+    #sql_success = """SELECT COUNT(*) FROM weblogs WHERE status LIKE \'2__\';"""
+    #cur.execute(sql_success)
+
+    # Get # of all successful local GET requests
     sql_success = """SELECT COUNT(*) FROM weblogs WHERE status LIKE \'2__\';"""
     cur.execute(sql_success)
+
+    # Get # of all successful remote GET requests
+    # select count(*) from weblogs where status like '2__';
+    sql_success = """SELECT COUNT(*) FROM weblogs WHERE status LIKE \'2__\';"""
+    cur.execute(sql_success)
+
     success = cur.fetchone()[0]
 
     # Determine rate if there was at least one request
