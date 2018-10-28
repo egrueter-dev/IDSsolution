@@ -23,7 +23,7 @@ def index():
     cur.execute(sql_success)
     success = cur.fetchone()[0]
 
-    # Get # of all successful local GET requests
+    # Get # of all successful remote GET requests
     sql_success = """SELECT COUNT(*) FROM weblogs WHERE status LIKE \'2__\' and source = 'remote';"""
     cur.execute(sql_success)
     success_remote = cur.fetchone()[0]
