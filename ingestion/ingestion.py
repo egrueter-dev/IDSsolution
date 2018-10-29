@@ -3,12 +3,13 @@ import pika
 import json
 import os
 import time
-from utils import parse_log, is_get_request
+import datetime
+import sys # imported this
+from utils import parse_log, is_get_request # add utils.py to Docker file
 
-#Connect  to RabbitMQ
+#Connect to RabbitMQ
 credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ['RABBITMQ_DEFAULT_PASS'])
-parameters = pika.ConnectionParameters(host='rabbit',
-                                       port=5672, credentials=credentials)
+parameters = pika.ConnectionParameters(host='rabbit', port=5672, credentials=credentials)
 
 while True:
     try:
@@ -17,35 +18,30 @@ while True:
     except pika.exceptions.ConnectionClosed:
         print('Ingestion: RabbitMQ not up yet.')
         time.sleep(2)
-        
+
 print('Ingestion: Connection to RabbitMQ established')
 
-
 # Start queue
-
 channel = connection.channel()
 channel.queue_declare(queue='log-analysis')
 
-# Read weblogs
-
-f = open('weblogs.log', 'r')
+f = open('weblogs.log', 'r', errors='ignore') # ignore bad data
 
 while True:
     try:
         msg = f.readline()
 
-        if not msg:
+        if not msg: 
             break
-        #If message is GET request, ingest it into the queue
+
+        # If message is GET request, ingest it into the queue
         if is_get_request(msg):
             # Parse GET request for relevant information
             day, status, source = parse_log(msg)
 
             # Store in RabbitMQ
-            body = json.dumps({'day': str(day), 'status': status})
-            channel.basic_publish(exchange='',
-                                  routing_key='log-analysis',
-                                  body=body)
+            body = json.dumps({'day': str(day), 'status': status, 'source': str(source)})
+            channel.basic_publish(exchange='', routing_key='log-analysis', body=body)
         
     except:
         print("Unexpected error:" +  sys.exc_info()[0])

@@ -8,6 +8,8 @@ services:
      - env_file
     networks:
       - db_network
+    ports:
+      - "5432:5432"
   flaskapp:
     build: .
     env_file:
@@ -19,6 +21,8 @@ services:
       - web_network
     depends_on:
       - db
+    ports: 
+      - "5000:5000" # map ports to outside
   rabbit:
     image: "rabbitmq:3-management"
     hostname: "rabbit"
@@ -41,7 +45,7 @@ services:
     depends_on:
       - rabbit
     ports:
-     - "80:5672"
+     - "5673:5673" # Changed port
   processing:
     build: processing/.
     env_file:
@@ -53,11 +57,11 @@ services:
     depends_on:
       - rabbit
     ports:
-     - "81:5672"
+     - "5674:5674" #changed port
   nginx:
     image: "nginx:1.13.5"
     ports:
-      - "80:8080"
+      - "8080:8080"  # changed port
     volumes:
       - ./conf.d:/etc/nginx/conf.d
     networks:

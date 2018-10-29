@@ -7,8 +7,7 @@ import json
 
 # Connect to RabbitMQ
 credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ['RABBITMQ_DEFAULT_PASS'])
-parameters = pika.ConnectionParameters(host='rabbit',
-                                       port=5672, credentials=credentials)
+parameters = pika.ConnectionParameters(host='rabbit', port=5672, credentials=credentials)
 
 while True:
     try:
@@ -25,15 +24,20 @@ channel = connection.channel()
 channel.queue_declare(queue='log-analysis')
 
 # Connect to PostgreSQL database
-conn = psycopg2.connect(host='db', database=os.environ['POSTGRES_DB'], user=os.environ['POSTGRES_USER'], password=os.environ['POSTGRES_PASSWORD'])
+conn = psycopg2.connect(host='db', port='5432',
+  database=os.environ['POSTGRES_DB'], 
+  user=os.environ['POSTGRES_USER'], 
+  password=os.environ['POSTGRES_PASSWORD']
+)
+
 cur = conn.cursor()
 
-
 # main function that reads from RabbitMQ queue and stores it in database
+# need to modify this to pass local/remote
 def callback(ch, method, properties, body):
     msg = json.loads(body)
-    values = "to_date(\'" + msg['day'] + "\', \'YYYY-MM-DD\')" + ", " + msg['status']
-    sql = """INSERT INTO weblogs (day, status)
+    values = "to_date(\'" + msg['day'] + "\', \'YYYY-MM-DD\')" + ", " + msg['status'] + ", " + "\'" + msg['source'] + "\'"
+    sql = """INSERT INTO weblogs (day, status, source)
              VALUES (%s);""" % values
     cur.execute(sql, body)
     conn.commit()
